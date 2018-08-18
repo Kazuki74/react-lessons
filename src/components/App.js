@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
+import { connect } from 'react-redux'
+import { increment, decrement } from '../actions/index'
 
 // class App extends Component {
 //   render() {
@@ -72,35 +74,68 @@ import PropTypes from "prop-types";
 // }
 
 // stateは変更可能な値
-const App = () => (<Counter></Counter>)
+// const App = () => (<Counter></Counter>)
 
-class Counter extends Component {
-	constructor(props) {
-		super(props)
-		this.state = { count: 0 }
-	}
+// class Counter extends Component {
+// 	constructor(props) {
+// 		super(props)
+// 		this.state = { count: 0 }
+// 	}
 
-	handlePlusButton = () => {
-		// これはダメ。renderされないからDOMが更新されない
-		// this.state = { count: this.state.count + 1}
+// 	handlePlusButton = () => {
+// 		// これはダメ。renderされないからDOMが更新されない
+// 		// this.state = { count: this.state.count + 1}
 
-		// setStateが実行されるとrenderも実行される
-		this.setState({ count: this.state.count + 1 })
-	}
+// 		// setStateが実行されるとrenderも実行される
+// 		this.setState({ count: this.state.count + 1 })
+// 	}
 
-	handleMinusButton = () => {
-		this.setState({ count: this.state.count - 1 })
-	}
+// 	handleMinusButton = () => {
+// 		this.setState({ count: this.state.count - 1 })
+// 	}
+
+// 	render() {
+// 		return (
+// 			<React.Fragment>
+// 				<div>count: { this.state.count } </div>
+// 				<button onClick={this.handlePlusButton}>+1</button>
+// 				<button onClick={this.handleMinusButton}>-1</button>
+// 			</React.Fragment>
+// 		)
+// 	}
+// }
+
+class App extends Component {
+	// 初期化はreducerで行う
+
+	// actioncreaterで実行するため必要ない
 
 	render() {
+		const props = this.props
+		console.log(props)
 		return (
 			<React.Fragment>
-				<div>count: { this.state.count } </div>
-				<button onClick={this.handlePlusButton}>+1</button>
-				<button onClick={this.handleMinusButton}>-1</button>
+				<div>count: { props.value } </div>
+				<button onClick={props.increment}>+1</button>
+				<button onClick={props.decrement}>-1</button>
 			</React.Fragment>
 		)
 	}
 }
 
-export default App;
+const mapStateToProps = state => ({
+	value: state.count.value
+})
+
+const mapDispatchToProps = dispatch => ({
+	increment: () => dispatch(increment()),
+	decrement: () => dispatch(decrement())
+})
+
+// dispatchは以下でもよい
+// const mapDispatchToProps = ({
+// 	increment, decrement
+// })
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
+
