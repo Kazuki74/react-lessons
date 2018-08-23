@@ -1,4 +1,4 @@
-import { READ_EVENTS } from '../actions'
+import { READ_EVENTS, DELETE_EVENT } from '../actions'
 import _ from 'lodash'
 
 export default (events = {}, action) => {
@@ -15,6 +15,9 @@ export default (events = {}, action) => {
 		// 	2: {"id":2,"title":"Let's have an event 2!","body":"This is the body for event 2."}
 		// ]
 			return _.mapKeys(action.response.data, 'id')
+		case DELETE_EVENT:
+			delete events[action.id]
+			return { ...events }
 		default:
 			return events
 	}
