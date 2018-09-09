@@ -1,9 +1,11 @@
-import { READ_EVENT, READ_EVENTS, DELETE_EVENT } from '../actions'
+import { READ_EVENT, READ_EVENTS, CREATE_EVENT, UPDATE_EVENT, DELETE_EVENT } from '../actions'
 import _ from 'lodash'
 
 export default (events = {}, action) => {
 	switch (action.type) {
+		case CREATE_EVENT:
 		case READ_EVENT:
+		case UPDATE_EVENT:
 			const data = action.response.data
 			return {...events, [data.id]: data}
 		case READ_EVENTS:
